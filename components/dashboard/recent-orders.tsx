@@ -56,7 +56,7 @@ export function RecentOrders({ orders }: { orders: RecentOrder[] }) {
               </div>
               <div className="flex items-center gap-3">
                 <Badge variant={statusVariant[order.status] || "outline"} className="text-xs capitalize">
-                  {order.status.replace("-", " ")}
+                  {order.status?.replace("-", " ")}
                 </Badge>
                 <span className="text-sm font-medium tabular-nums">${order.amount.toLocaleString()}</span>
               </div>

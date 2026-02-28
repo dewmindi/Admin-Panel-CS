@@ -26,10 +26,22 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 
+interface Plan {
+  _id: string
+  name: string
+  description: string
+  monthlyPrice: number
+  yearlyPrice: number
+  features: string[]
+  stripeProductId?: string
+  stripePriceIdMonthly?: string
+  stripePriceIdYearly?: string
+}
+
 interface PlanFormDialogProps {
   open: boolean
   onOpenChange: (open: boolean) => void
-  plan?: Record<string, unknown> | null
+  plan?: Plan | null
   onSuccess: () => void
 }
 
@@ -60,14 +72,14 @@ export function PlanFormDialog({
   useEffect(() => {
     if (open) {
       form.reset({
-        name: (plan?.name as string) || "",
-        description: (plan?.description as string) || "",
-        monthlyPrice: (plan?.monthlyPrice as number) || 0,
-        yearlyPrice: (plan?.yearlyPrice as number) || 0,
-        features: (plan?.features as string[]) || [],
-        stripeProductId: (plan?.stripeProductId as string) || "",
-        stripePriceIdMonthly: (plan?.stripePriceIdMonthly as string) || "",
-        stripePriceIdYearly: (plan?.stripePriceIdYearly as string) || "",
+        name: plan?.name || "",
+        description: plan?.description || "",
+        monthlyPrice: plan?.monthlyPrice || 0,
+        yearlyPrice: plan?.yearlyPrice || 0,
+        features: plan?.features || [],
+        stripeProductId: plan?.stripeProductId || "",
+        stripePriceIdMonthly: plan?.stripePriceIdMonthly || "",
+        stripePriceIdYearly: plan?.stripePriceIdYearly || "",
       })
       setFeatureInput("")
     }

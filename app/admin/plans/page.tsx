@@ -40,12 +40,24 @@ import {
 import { Skeleton } from "@/components/ui/skeleton"
 import { PlanFormDialog } from "@/components/plans/plan-form-dialog"
 
+interface Plan {
+  _id: string
+  name: string
+  description: string
+  monthlyPrice: number
+  yearlyPrice: number
+  features: string[]
+  stripeProductId?: string
+  stripePriceIdMonthly?: string
+  stripePriceIdYearly?: string
+}
+
 const fetcher = (url: string) => fetch(url).then((r) => r.json())
 
 export default function PlansPage() {
-  const { data: plans, isLoading, mutate } = useSWR("/api/plans", fetcher)
+  const { data: plans, isLoading, mutate } = useSWR<Plan[]>("/api/plans", fetcher)
   const [formOpen, setFormOpen] = useState(false)
-  const [editPlan, setEditPlan] = useState<Record<string, unknown> | null>(null)
+  const [editPlan, setEditPlan] = useState<Plan | null>(null)
   const [deleteId, setDeleteId] = useState<string | null>(null)
 
   async function handleDelete() {
@@ -89,7 +101,7 @@ export default function PlansPage() {
             <Skeleton key={i} className="h-64" />
           ))}
         </div>
-      ) : (plans as Record<string, unknown>[])?.length === 0 ? (
+      ) : plans?.length === 0 ? (
         <Card>
           <CardContent className="flex flex-col items-center justify-center py-16 text-center">
             <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-lg bg-secondary">
@@ -113,16 +125,14 @@ export default function PlansPage() {
         </Card>
       ) : (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {(plans as Record<string, unknown>[])?.map((plan) => (
-            <Card key={plan._id as string} className="relative">
+          {plans?.map((plan) => (
+            <Card key={plan._id} className="relative">
               <CardHeader className="pb-3">
                 <div className="flex items-start justify-between">
                   <div>
-                    <CardTitle className="text-base">
-                      {plan.name as string}
-                    </CardTitle>
+                    <CardTitle className="text-base">{plan.name}</CardTitle>
                     <CardDescription className="mt-1 text-xs">
-                      {plan.description as string}
+                      {plan.description}
                     </CardDescription>
                   </div>
                   <DropdownMenu>
@@ -156,7 +166,7 @@ export default function PlansPage() {
                       <DropdownMenuSeparator />
                       <DropdownMenuItem
                         className="text-destructive focus:text-destructive"
-                        onClick={() => setDeleteId(plan._id as string)}
+                        onClick={() => setDeleteId(plan._id)}
                       >
                         <Trash2 className="mr-2 h-4 w-4" /> Delete
                       </DropdownMenuItem>
@@ -168,7 +178,7 @@ export default function PlansPage() {
                 <div className="flex items-baseline gap-3">
                   <div className="flex flex-col">
                     <span className="text-2xl font-bold tabular-nums">
-                      ${(plan.monthlyPrice as number)?.toFixed(2)}
+                      ${plan.monthlyPrice?.toFixed(2)}
                     </span>
                     <span className="text-xs text-muted-foreground">
                       /month
@@ -176,15 +186,15 @@ export default function PlansPage() {
                   </div>
                   <div className="flex flex-col">
                     <span className="text-lg font-semibold tabular-nums text-muted-foreground">
-                      ${(plan.yearlyPrice as number)?.toFixed(2)}
+                      ${plan.yearlyPrice?.toFixed(2)}
                     </span>
                     <span className="text-xs text-muted-foreground">/year</span>
                   </div>
                 </div>
 
-                {(plan.features as string[])?.length > 0 && (
+                {plan.features?.length > 0 && (
                   <div className="flex flex-col gap-1.5">
-                    {(plan.features as string[]).map((feat, i) => (
+                    {plan.features.map((feat, i) => (
                       <div
                         key={i}
                         className="flex items-center gap-2 text-xs text-muted-foreground"
