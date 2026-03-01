@@ -13,6 +13,7 @@ import {
   LogOut,
   ChevronUp,
   CreditCard,
+  Package as PackageIcon,
 } from "lucide-react"
 import {
   Sidebar,
@@ -41,6 +42,7 @@ const mainNav = [
   { title: "Orders", href: "/admin/orders", icon: ShoppingCart },
   { title: "Content", href: "/admin/content", icon: FileText },
   { title: "Hosting", href: "/admin/hosting", icon: Server },
+  { title: "Packages", href: "/admin/packages", icon: PackageIcon },
 ]
 
 const utilityNav = [

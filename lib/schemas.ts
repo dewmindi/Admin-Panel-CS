@@ -71,3 +71,28 @@ export type OrderInput = z.infer<typeof orderSchema>
 export type HostingCustomerInput = z.infer<typeof hostingCustomerSchema>
 export type ContentPageInput = z.infer<typeof contentPageSchema>
 export type HostingPlanInput = z.infer<typeof hostingPlanSchema>
+
+const simpleFeatureSchema = z.object({
+  name: z.string(),
+  value: z.boolean(),
+})
+
+const titledGroupSchema = z.object({
+  title: z.string(),
+  items: z.array(
+    z.object({
+      text: z.string(),
+      highlight: z.boolean(),
+    })
+  ),
+})
+
+export const packageSchema = z.object({
+  name: z.string().min(1, "Package name is required"),
+  subcategory_id: z.string().min(1, "Subcategory is required"),
+  price: z.number().min(0, "Price must be a positive number"),
+  overview: z.string().optional(),
+  features: z.array(z.union([simpleFeatureSchema, titledGroupSchema])).optional(),
+})
+
+export type PackageInput = z.infer<typeof packageSchema>
