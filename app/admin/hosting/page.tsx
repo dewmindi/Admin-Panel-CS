@@ -56,12 +56,7 @@ import { HostingFormDialog } from "@/components/hosting/hosting-form-dialog"
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json())
 
-const statusVariant: Record<string, "default" | "secondary" | "destructive" | "outline"> = {
-  active: "default",
-  suspended: "secondary",
-  expired: "destructive",
-  cancelled: "outline",
-}
+
 
 function daysUntil(dateStr: string): number {
   const now = new Date()
@@ -241,6 +236,24 @@ export default function HostingPage() {
                 ) : (
                   paginated.map((customer: Record<string, unknown>) => {
                     const days = customer.renewalDate ? daysUntil(customer.renewalDate as string) : null
+                    let status = customer.status as string
+                    if (days !== null && days < 0 && status === "active") {
+                      status = "expired"
+                    }
+
+                    const getStatusClass = (s: string): string => {
+                      if (s === "expired") {
+                        return "bg-red-500 hover:bg-red-600"
+                      }
+                      if (s === "active") {
+                        if (days !== null && days <= 30) {
+                          return "bg-yellow-500 hover:bg-yellow-600"
+                        }
+                        return "bg-[#92ef83] hover:bg-green-600"
+                      }
+                      return ""
+                    }
+
                     const isUrgent = days !== null && days <= 7
                     const isSoon = days !== null && days <= 30
 
@@ -264,8 +277,8 @@ export default function HostingPage() {
                           </Badge>
                         </TableCell>
                         <TableCell>
-                          <Badge variant={statusVariant[customer.status as string] || "outline"} className="text-xs capitalize">
-                            {customer.status as string}
+                          <Badge className={`text-xs capitalize ${getStatusClass(status)}`}>
+                            {status}
                           </Badge>
                         </TableCell>
                         <TableCell className="text-sm font-medium tabular-nums">
