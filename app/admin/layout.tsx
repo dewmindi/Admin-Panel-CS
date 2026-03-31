@@ -14,6 +14,7 @@ import { usePathname } from "next/navigation"
 const routeLabels: Record<string, string> = {
   "/admin": "Dashboard",
   "/admin/orders": "Orders",
+  "/admin/blog": "Blog Posts",
   "/admin/content": "Content Management",
   "/admin/hosting": "Hosting Management",
   "/admin/emails": "Email Templates",

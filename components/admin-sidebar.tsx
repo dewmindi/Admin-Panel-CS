@@ -14,6 +14,7 @@ import {
   ChevronUp,
   CreditCard,
   Package as PackageIcon,
+  BookOpen,
 } from "lucide-react"
 import {
   Sidebar,
@@ -40,6 +41,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 const mainNav = [
   { title: "Dashboard", href: "/admin", icon: LayoutDashboard },
   { title: "Orders", href: "/admin/orders", icon: ShoppingCart },
+  { title: "Blog", href: "/admin/blog", icon: BookOpen },
   { title: "Content", href: "/admin/content", icon: FileText },
   { title: "Hosting", href: "/admin/hosting", icon: Server },
   { title: "Packages", href: "/admin/packages", icon: PackageIcon },
