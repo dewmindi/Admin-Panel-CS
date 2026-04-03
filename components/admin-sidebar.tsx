@@ -15,6 +15,7 @@ import {
   CreditCard,
   Package as PackageIcon,
   BookOpen,
+  ImageIcon,
 } from "lucide-react"
 import {
   Sidebar,
@@ -42,6 +43,7 @@ const mainNav = [
   { title: "Dashboard", href: "/admin", icon: LayoutDashboard },
   { title: "Orders", href: "/admin/orders", icon: ShoppingCart },
   { title: "Blog", href: "/admin/blog", icon: BookOpen },
+  { title: "Portfolio", href: "/admin/portfolio", icon: ImageIcon },
   { title: "Content", href: "/admin/content", icon: FileText },
   { title: "Hosting", href: "/admin/hosting", icon: Server },
   { title: "Packages", href: "/admin/packages", icon: PackageIcon },
